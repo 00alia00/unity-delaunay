@@ -20,17 +20,17 @@
  * SOFTWARE.
  */
 
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class DelaunayTriangulation {
+namespace GK
+{
+    public class DelaunayTriangulation {
 
 		/// <summary>
 		/// List of vertices that make up the triangulation
 		/// </summary>
-		public readonly List<Vector2> Vertices;
+		public readonly List<float2> Vertices;
 
 		/// <summary>
 		/// List of triangles that make up the triangulation. The elements index
@@ -39,7 +39,7 @@ namespace GK {
 		public readonly List<int> Triangles;
 
 		internal DelaunayTriangulation() {
-			Vertices = new List<Vector2>();
+			Vertices = new List<float2>();
 			Triangles = new List<int>();
 		}
 

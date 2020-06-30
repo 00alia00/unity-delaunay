@@ -21,15 +21,15 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class VoronoiClipper {
+namespace GK
+{
+    public class VoronoiClipper {
 
-		List<Vector2> pointsIn = new List<Vector2>();
-		List<Vector2> pointsOut = new List<Vector2>();
+		List<float2> pointsIn = new List<float2>();
+		List<float2> pointsOut = new List<float2>();
 
 		/// <summary>
 		/// Create a new Voronoi clipper
@@ -43,7 +43,7 @@ namespace GK {
 		/// polygon nor diagram, so can be run in parallel for several sites at
 		/// once. 
 		/// </summary>
-		public void ClipSite(VoronoiDiagram diag, IList<Vector2> polygon, int site, ref List<Vector2> clipped) {
+		public void ClipSite(VoronoiDiagram diag, IList<float2> polygon, int site, ref List<float2> clipped) {
 			pointsIn.Clear();
 
 			pointsIn.AddRange(polygon);
@@ -63,7 +63,7 @@ namespace GK {
 
 				var edge = diag.Edges[ei];
 
-				Vector2 lp, ld;
+				float2 lp, ld;
 
 				if (edge.Type == VoronoiDiagram.EdgeType.RayCCW || edge.Type == VoronoiDiagram.EdgeType.RayCW) {
 					lp = diag.Vertices[edge.Vert0];
@@ -99,7 +99,7 @@ namespace GK {
 					} else if (!p0Inside && !p1Inside) {
 						// Do nothing, both are outside
 					} else {
-						var intersection = Geom.LineLineIntersection(lp, ld.normalized, p0, (p1 - p0).normalized);
+						var intersection = Geom.LineLineIntersection(lp, math.normalize(ld), p0, math.normalize(p1 - p0));
 
 						if (p0Inside) {
 							pointsOut.Add(intersection);
@@ -118,7 +118,7 @@ namespace GK {
 			}
 
 			if (clipped == null) {
-				clipped = new List<Vector2>();
+				clipped = new List<float2>();
 			} else {
 				clipped.Clear();
 			}

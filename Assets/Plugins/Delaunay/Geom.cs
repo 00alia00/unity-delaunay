@@ -20,32 +20,31 @@
  * SOFTWARE.
  */
 
-
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class Geom : MonoBehaviour {
+namespace GK
+{
+    public class Geom  {
 
 		/// <summary>
 		/// Are these two vectors (approximately) coincident
 		/// </summary>
-		public static bool AreCoincident(Vector2 a, Vector2 b) {
-			return (a - b).magnitude < 0.000001f;
+		public static bool AreCoincident(float2 a, float2 b) {
+			return math.length(a - b) < 0.000001f;
 		}
 
 		/// <summary>
 		/// Is point p to the left of the line from l0 to l1?
 		/// </summary>
-		public static bool ToTheLeft(Vector2 p, Vector2 l0, Vector2 l1) {
+		public static bool ToTheLeft(float2 p, float2 l0, float2 l1) {
 			return ((l1.x-l0.x)*(p.y-l0.y) - (l1.y-l0.y)*(p.x-l0.x)) >= 0;
 		}
 
 		/// <summary>
 		/// Is point p to the right of the line from l0 to l1?
 		/// </summary>
-		public static bool ToTheRight(Vector2 p, Vector2 l0, Vector2 l1) {
+		public static bool ToTheRight(float2 p, float2 l0, float2 l1) {
 			return !ToTheLeft(p, l0, l1);
 		}
 
@@ -53,7 +52,7 @@ namespace GK {
 		/// Is point p inside the triangle formed by c0, c1 and c2 (assuming c1,
 		/// c2 and c3 are in CCW order)
 		/// </summary>
-		public static bool PointInTriangle(Vector2 p, Vector2 c0, Vector2 c1, Vector2 c2) {
+		public static bool PointInTriangle(float2 p, float2 c0, float2 c1, float2 c2) {
 			return ToTheLeft(p, c0, c1)
 				&& ToTheLeft(p, c1, c2)
 				&& ToTheLeft(p, c2, c0);
@@ -62,7 +61,7 @@ namespace GK {
 		/// <summary>
 		/// Is point p inside the circumcircle formed by c0, c1 and c2?
 		/// </summary>
-		public static bool InsideCircumcircle(Vector2 p, Vector2 c0, Vector2 c1, Vector2 c2) {
+		public static bool InsideCircumcircle(float2 p, float2 c0, float2 c1, float2 c2) {
 			var ax = c0.x-p.x;
 			var ay = c0.y-p.y;
 			var bx = c1.x-p.x;
@@ -80,7 +79,7 @@ namespace GK {
 		/// <summary>
 		/// Rotate vector v left 90 degrees
 		/// </summary>
-		public static Vector2 RotateRightAngle(Vector2 v) {
+		public static float2 RotateRightAngle(float2 v) {
 			var x = v.x;
 			v.x = -v.y;
 			v.y = x;
@@ -104,10 +103,10 @@ namespace GK {
 		/// By checking the m0/m1 values, you can check intersections for line
 		/// segments and rays.
 		/// </summary>
-		public static bool LineLineIntersection(Vector2 p0, Vector2 v0, Vector2 p1, Vector2 v1, out float m0, out float m1) {
+		public static bool LineLineIntersection(float2 p0, float2 v0, float2 p1, float2 v1, out float m0, out float m1) {
 			var det = (v0.x * v1.y - v0.y * v1.x);
 
-			if (Mathf.Abs(det) < 0.001f) {
+			if (math.abs(det) < 0.001f) {
 				m0 = float.NaN;
 				m1 = float.NaN;
 
@@ -115,7 +114,7 @@ namespace GK {
 			} else {
 				m0 = ((p0.y - p1.y) * v1.x - (p0.x - p1.x) * v1.y) / det;
 				
-				if (Mathf.Abs(v1.x) >= 0.001f) {
+				if (math.abs(v1.x) >= 0.001f) {
 					m1 = (p0.x + m0*v0.x - p1.x) / v1.x;
 				} else {
 					m1 = (p0.y + m0*v0.y - p1.y) / v1.y;
@@ -131,13 +130,13 @@ namespace GK {
 		///
 		/// If there are no intersections, returns a NaN vector
 		/// <summary>
-		public static Vector2 LineLineIntersection(Vector2 p0, Vector2 v0, Vector2 p1, Vector2 v1) {
+		public static float2 LineLineIntersection(float2 p0, float2 v0, float2 p1, float2 v1) {
 			float m0, m1;
 
 			if (LineLineIntersection(p0, v0, p1, v1, out m0, out m1)) {
 				return p0 + m0 * v0;
 			} else {
-				return new Vector2(float.NaN, float.NaN);
+				return new float2(float.NaN, float.NaN);
 			}
 		}
 
@@ -145,7 +144,7 @@ namespace GK {
 		/// Returns the center of the circumcircle defined by three points (c0,
 		/// c1 and c2) on its edge.
 		/// </summary>
-		public static Vector2 CircumcircleCenter(Vector2 c0, Vector2 c1, Vector2 c2) {
+		public static float2 CircumcircleCenter(float2 c0, float2 c1, float2 c2) {
 			var mp0 = 0.5f * (c0 + c1);
 			var mp1 = 0.5f * (c1 + c2);
 
@@ -163,7 +162,7 @@ namespace GK {
 		/// Returns the triangle centroid for triangle defined by points c0, c1
 		/// and c2. 
 		/// </summary>
-		public static Vector2 TriangleCentroid(Vector2 c0, Vector2 c1, Vector2 c2) {
+		public static float2 TriangleCentroid(float2 c0, float2 c1, float2 c2) {
 			var val = (1.0f/3.0f) * (c0 + c1 + c2) ;
 			return val;
 		}
@@ -172,7 +171,7 @@ namespace GK {
 		/// Returns the signed area of a polygon. CCW polygons return a positive
 		/// area, CW polygons return a negative area.
 		/// </summary>
-		public static float Area(IList<Vector2> polygon) {
+		public static float Area(IList<float2> polygon) {
 			var area = 0.0f;
 
 			var count = polygon.Count;

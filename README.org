@@ -1,3 +1,4 @@
+This version uses Unity.Mathematics so that it doesnt rely on UnityEngine
 
 * Voronoi destruction effect
 I was interested in implementing some algorithms for generating Delaunay

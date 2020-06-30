@@ -21,13 +21,13 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 using UnityEngine.Profiling;
 
-namespace GK {
-	public class VoronoiCalculator {
+namespace GK
+{
+    public class VoronoiCalculator {
 
 		DelaunayCalculator delCalc;
 		PTComparer cmp;
@@ -45,7 +45,7 @@ namespace GK {
 		/// <summary>
 		/// Calculate a voronoi diagram and return it. 
 		/// </summary>
-		public VoronoiDiagram CalculateDiagram(IList<Vector2> inputVertices) {
+		public VoronoiDiagram CalculateDiagram(IList<float2> inputVertices) {
 			VoronoiDiagram result = null;
 			CalculateDiagram(inputVertices, ref result);
 			return result;
@@ -58,7 +58,7 @@ namespace GK {
 		/// it might if it has to resize internal buffers, but all buffers are
 		/// reused from invocation to invocation. 
 		/// </summary>
-		public void CalculateDiagram(IList<Vector2> inputVertices, ref VoronoiDiagram result) {
+		public void CalculateDiagram(IList<float2> inputVertices, ref VoronoiDiagram result) {
 			// TODO: special case for 1 points
 			// TODO: special case for 2 points
 			// TODO: special case for 3 points
@@ -162,7 +162,7 @@ namespace GK {
 
 					var p0 = verts[ptCurr.Point];
 
-					var v2nan = new Vector2(float.NaN, float.NaN);
+					var v2nan = new float2(float.NaN, float.NaN);
 
 					if (count == 0) {
 						isEdge = true;
@@ -177,7 +177,7 @@ namespace GK {
 					}
 
 					if (isEdge) {
-						Vector2 v0, v1;
+						float2 v0, v1;
 
 						if (ptCurr.Point == tris[tiCurr]) {
 							v0 = verts[tris[tiCurr+2]] - verts[tris[tiCurr+0]];
@@ -287,7 +287,7 @@ namespace GK {
 
 
 		class PTComparer : IComparer<PointTriangle> {
-			public List<Vector2> verts;
+			public List<float2> verts;
 			public List<int> tris;
 
 			public int Compare(PointTriangle pt0, PointTriangle pt1) {
@@ -339,7 +339,7 @@ namespace GK {
 				}
 			}
 
-			Vector2 Centroid(PointTriangle pt) {
+			float2 Centroid(PointTriangle pt) {
 				var ti = pt.Triangle;
 				return Geom.TriangleCentroid(verts[tris[ti]], verts[tris[ti+1]], verts[tris[ti+2]]);
 			}

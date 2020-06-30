@@ -20,19 +20,20 @@
  * SOFTWARE.
  */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class BreakableSurface : MonoBehaviour {
+namespace GK
+{
+    public class BreakableSurface : MonoBehaviour {
 
 		public MeshFilter Filter     { get; private set; }
 		public MeshRenderer Renderer { get; private set; }
 		public MeshCollider Collider { get; private set; }
 		public Rigidbody Rigidbody   { get; private set; }
 
-		public List<Vector2> Polygon;
+		public List<float2> Polygon;
 		public float Thickness = 1.0f;
 		public float MinBreakArea = 0.01f;
 		public float MinImpactToBreak = 50.0f;
@@ -69,10 +70,10 @@ namespace GK {
 				// Assume it's a cube with localScale dimensions
 				var scale = 0.5f * transform.localScale;
 
-				Polygon.Add(new Vector2(-scale.x, -scale.y));
-				Polygon.Add(new Vector2(scale.x, -scale.y));
-				Polygon.Add(new Vector2(scale.x, scale.y));
-				Polygon.Add(new Vector2(-scale.x, scale.y));
+				Polygon.Add(new float2(-scale.x, -scale.y));
+				Polygon.Add(new float2(scale.x, -scale.y));
+				Polygon.Add(new float2(scale.x, scale.y));
+				Polygon.Add(new float2(-scale.x, scale.y));
 
 				Thickness = 2.0f * scale.z;
 
@@ -117,11 +118,11 @@ namespace GK {
 				var calc = new VoronoiCalculator();
 				var clip = new VoronoiClipper();
 
-				var sites = new Vector2[10];
+				var sites = new float2[10];
 
 				for (int i = 0; i < sites.Length; i++) {
 					var dist = Mathf.Abs(NormalizedRandom(0.5f, 1.0f/2.0f));
-					var angle = 2.0f * Mathf.PI * Random.value;
+					var angle = 2.0f * Mathf.PI * UnityEngine.Random.value;
 
 					sites[i] = position + new Vector2(
 							dist * Mathf.Cos(angle),
@@ -130,7 +131,7 @@ namespace GK {
 
 				var diagram = calc.CalculateDiagram(sites);
 
-				var clipped = new List<Vector2>();
+				var clipped = new List<float2>();
 
 				for (int i = 0; i < sites.Length; i++) {
 					clip.ClipSite(diagram, Polygon, i, ref clipped);
@@ -160,7 +161,7 @@ namespace GK {
 			}
 		}
 
-		static Mesh MeshFromPolygon(List<Vector2> polygon, float thickness) {
+		static Mesh MeshFromPolygon(List<float2> polygon, float thickness) {
 			var count = polygon.Count;
 			// TODO: cache these things to avoid garbage
 			var verts = new Vector3[6 * count];
@@ -195,7 +196,7 @@ namespace GK {
 				verts[vi++] = new Vector3(polygon[iNext].x, polygon[iNext].y, -ext);
 				verts[vi++] = new Vector3(polygon[iNext].x, polygon[iNext].y, ext);
 
-				var norm = Vector3.Cross(polygon[iNext] - polygon[i], Vector3.forward).normalized;
+				var norm = Vector3.Cross((Vector2)(polygon[iNext] - polygon[i]), Vector3.forward).normalized;
 
 				norms[ni++] = norm;
 				norms[ni++] = norm;

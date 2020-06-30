@@ -21,15 +21,25 @@
  */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class DelaunayCalculator {
+namespace GK
+{
+    public static class Debug
+    {
+        public static void Assert(bool is_true)
+        {
+            if (!is_true)
+            {
+                throw new System.Exception("This shouldnt happen");
+            }
+        }
+    }
+    public class DelaunayCalculator {
 
 		int highest = -1;
-		IList<Vector2> verts;
+		IList<float2> verts;
 
 		List<int> indices;
 		List<TriangleNode> triangles;
@@ -47,7 +57,7 @@ namespace GK {
 		/// </summary>
 		/// <param name="verts">List of vertices to use for calculation</param>
 		/// <returns>The calculated Delaunay triangulation<returns>
-		public DelaunayTriangulation CalculateTriangulation(IList<Vector2> verts) {
+		public DelaunayTriangulation CalculateTriangulation(IList<float2> verts) {
 			DelaunayTriangulation result = null;
 			CalculateTriangulation(verts, ref result);
 
@@ -62,7 +72,7 @@ namespace GK {
 		/// </summary>
 		/// <param name="verts">List of vertices to use for calculation</param>
 		/// <param name="result">Result object to store the triangulation in</param>
-		public void CalculateTriangulation(IList<Vector2> verts, ref DelaunayTriangulation result) {
+		public void CalculateTriangulation(IList<float2> verts, ref DelaunayTriangulation result) {
 			if (verts == null) {
 				throw new ArgumentNullException("points");
 			}

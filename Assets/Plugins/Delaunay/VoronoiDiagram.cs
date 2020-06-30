@@ -20,12 +20,12 @@
  * SOFTWARE.
  */
 
-using System;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.Mathematics;
 
-namespace GK {
-	public class VoronoiDiagram {
+namespace GK
+{
+    public class VoronoiDiagram {
 		/// <summary>
 		/// The voronoi diagram is calculated from a Delaunay triangulation.
 		/// This is a reference to the "source" triangulation, in case you need
@@ -36,12 +36,12 @@ namespace GK {
 		/// <summary>
 		/// The sites of the voronoi triangulation.
 		/// </summary>
-		public readonly List<Vector2> Sites;
+		public readonly List<float2> Sites;
 		
 		/// <summary>
 		/// The vertices of the voronoi diagram
 		/// </summary>
-		public readonly List<Vector2> Vertices;
+		public readonly List<float2> Vertices;
 		
 		/// <summary>
 		/// The edges of the voronoi diagram, grouped by site and ordered
@@ -57,7 +57,7 @@ namespace GK {
 		internal VoronoiDiagram() {
 			Triangulation = new DelaunayTriangulation();
 			Sites = Triangulation.Vertices;
-			Vertices = new List<Vector2>();
+			Vertices = new List<float2>();
 			Edges = new List<Edge>();
 			FirstEdgeBySite = new List<int>();
 		}
@@ -126,12 +126,12 @@ namespace GK {
 			/// For segment edge types this is equal to a vector with both
 			/// components equal to NaN. 
 			/// </summary>
-			public Vector2 Direction;
+			public float2 Direction;
 			
 			/// <summary>
 			/// Construct the edge. 
 			/// </summary>
-			public Edge(EdgeType type, int site, int vert0, int vert1, Vector2 direction) {
+			public Edge(EdgeType type, int site, int vert0, int vert1, float2 direction) {
 				this.Type = type;
 				this.Site = site;
 				this.Vert0 = vert0;
