@@ -1,10 +1,10 @@
 {
-    "name": "com.unity.delaunay",
+    "name": "com.00alia00.delaunay",
     "displayName": "Unity-Delaunay for Unity.Mathematics",
     "version": "0.0.1",
     "unity": "2019.3",
     "description": "Unity-Delaunay for Unity.Mathematics",
-    "author": "Port 00alia00 <not@given.com> original OskarSigvardsson (https://github.com/OskarSigvardsson/unity-delaunay)",
+    "author": "Port by 00alia00 <not@given.com> original OskarSigvardsson (https://github.com/OskarSigvardsson/unity-delaunay)",
     "homepage": "https://github.com/OskarSigvardsson/unity-delaunay",
     "repository": "https://github.com/00alia00/unity-delaunay.git",
     "publishConfig": {
