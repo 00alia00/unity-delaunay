@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "com.00alia00.delaunay": "https://github.com/00alia00/unity-delaunay.git",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.vscode": "1.2.0",
     "com.unity.mathematics": "1.1.0",
@@ -13,11 +12,5 @@
     "com.unity.modules.jsonserialize": "1.0.0",
     "com.unity.modules.physics": "1.0.0",
     "com.unity.modules.ui": "1.0.0"
-  },
-  "lock": {
-    "com.00alia00.delaunay": {
-      "revision": "HEAD",
-      "hash": "c8a3fdccb6138949fb4f300a6af1e85428712d73"
-    }
   }
 }
