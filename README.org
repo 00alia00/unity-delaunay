@@ -2,8 +2,7 @@ This version uses Unity.Mathematics so that it doesnt rely on UnityEngine
 
 ## Installation
 To Use it just put the following into your packages/manifest.json
-```json
-{
+```{
   "dependencies": {
     "com.00alia00.delaunay": "https://github.com/00alia00/unity-delaunay.git",
   }
